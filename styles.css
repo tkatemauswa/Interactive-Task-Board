@@ -108,7 +108,7 @@ input[type="text"] {
 .column-header {
   display: flex;
   justify-content: space-between;
-  align-items: centre;
+  align-items: center;
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 2px solid #dcdfe4;
@@ -164,7 +164,7 @@ input[type="text"] {
 .task-actions {
   display: flex;
   justify-content: space-between;
-  align-items: centre;
+  align-items: center;
   margin-top: 6px;
 }
 
