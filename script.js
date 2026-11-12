@@ -13,6 +13,7 @@ const taskDescription = document.getElementById('task-description');
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   renderTasks();
+  setupDropZones();
   
   taskForm.addEventListener('submit', handleAddTask);
   searchInput.addEventListener('input', renderTasks);
@@ -28,6 +29,7 @@ function saveTasks() {
 function handleAddTask(e) {
   e.preventDefault();
 
+  //Ignore tasks whose title is empty
   if (taskTitle.value.trim() === ''){
     return;
   }
@@ -44,6 +46,7 @@ function handleAddTask(e) {
   tasks.push(newTask);
   saveTasks();
   renderTasks();
+
 
   // Reset form fields
   taskForm.reset();
@@ -103,9 +106,12 @@ function renderTasks() {
   document.getElementById('count-in-progress').textContent = counts['in-progress'];
   document.getElementById('count-completed').textContent = counts['completed'];
 
-  const countCompleted = tasks.length - countCompleted;
-  document.getElementById('task-summary').textContent = `${activeCount} active. ${countCompleted} completed`;
-}
+  // Uses the full tasks list, so search and filters dont change it
+  const completedCount = tasks.filter(task => task.status === 'completed').length;
+  const activeCount = tasks.length - completedCount;
+  document.getElementById('task-summary').textContent =
+    `${activeCount} active - ${completedCount} completed`; }
+
 
 // Helper: Create Task DOM element
 function createTaskCard(task) {
@@ -113,9 +119,21 @@ function createTaskCard(task) {
   card.className = 'task-card';
   card.setAttribute('data-priority', task.priority);
 
+  // Make the card draggable
+  card.setAttribute('draggable', 'true');
+
+  card.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData('text/plain', task.id);
+    card.classList.add('dragging');
+  });
+
+  card.addEventListener('dragend', () => {
+    card.classList.remove('dragging');
+  });
+
   card.innerHTML = `
     <div class="task-card-title">${escapeHtml(task.title)}</div>
-    <p class="task-card-description">${escapeHtml(task.description || '')} </p>
+    <p class="task-card-description">${escapeHtml(task.description || '')}</p>
     <div class="task-meta">
       <span>${task.category}</span>
       <span>${task.priority} Priority</span>
@@ -136,4 +154,32 @@ function createTaskCard(task) {
 // Security: Helper function to escape basic HTML injection
 function escapeHtml(str) {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// Let each column accept dropped task cards
+function setupDropZones() {
+  const columns = document.querySelectorAll('.column');
+
+
+columns.forEach(column => {
+  column.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    column.classList.add('drag-over');
+  });
+
+
+column.addEventListener('dragleave', (e) => {
+  if (!column.contains(e.relatedTarget)) {
+    column.classList.remove('drag-over');
+  }
+});
+
+column.addEventListener('drop', (e) => {
+  e.preventDefault();
+  column.classList.remove('drag-over');
+  const taskId = e.dataTransfer.getData('text/plain');
+  updateTaskStatus(taskId, column.dataset.status);
+
+});
+});
 }

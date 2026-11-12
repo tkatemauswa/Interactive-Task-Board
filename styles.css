@@ -200,3 +200,16 @@ input[type="text"] {
   margin-top: 8px;
   font-weight: 600;
 }
+
+.task-card{
+  cursor: grab;
+}
+
+.task-card.dragging {
+  opacity: 0.5;
+}
+
+.column.drag-over {
+  outline: 2px dashed var(--accent-color);
+  outline-offset: -4px;
+}
