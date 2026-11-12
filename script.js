@@ -28,6 +28,10 @@ function saveTasks() {
 function handleAddTask(e) {
   e.preventDefault();
 
+  if (taskTitle.value.trim() === ''){
+    return;
+  }
+
   const newTask = {
     id: Date.now().toString(),
     title: taskTitle.value.trim(),
