@@ -8,6 +8,7 @@ const taskCategory = document.getElementById('task-category');
 const taskPriority = document.getElementById('task-priority');
 const searchInput = document.getElementById('search-input');
 const categoryFilter = document.getElementById('category-filter');
+const taskDescription = document.getElementById('task-description');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -30,10 +31,11 @@ function handleAddTask(e) {
   const newTask = {
     id: Date.now().toString(),
     title: taskTitle.value.trim(),
+    description: taskDescription.value.trim(),
     category: taskCategory.value,
     priority: taskPriority.value,
     status: 'todo'
-  };
+   };
 
   tasks.push(newTask);
   saveTasks();
@@ -106,6 +108,7 @@ function createTaskCard(task) {
 
   card.innerHTML = `
     <div class="task-card-title">${escapeHtml(task.title)}</div>
+    <p class="task-card-description">${escapeHtml(task.description || '')} </p>
     <div class="task-meta">
       <span>${task.category}</span>
       <span>${task.priority} Priority</span>

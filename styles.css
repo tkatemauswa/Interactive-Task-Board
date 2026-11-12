@@ -63,12 +63,27 @@ body {
   flex-wrap: wrap;
 }
 
-input, select, .btn {
+input, select, textarea, .btn {
   padding: 10px 14px;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   font-size: 0.95rem;
   outline: none;
+}
+
+textarea{
+  font-family: inherit;
+  flex-basis: 100%;
+  resize: vertical;
+}
+
+.text-card-description{
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.text-card-description:empty{
+  display: none;
 }
 
 input[type="text"] {
