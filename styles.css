@@ -194,3 +194,9 @@ input[type="text"] {
 .btn-danger:hover {
   text-decoration: underline;
 }
+
+.task-summary {
+  color: var(--accent-color);
+  margin-top: 8px;
+  font-weight: 600;
+}

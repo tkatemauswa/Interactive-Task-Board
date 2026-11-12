@@ -102,6 +102,9 @@ function renderTasks() {
   document.getElementById('count-todo').textContent = counts['todo'];
   document.getElementById('count-in-progress').textContent = counts['in-progress'];
   document.getElementById('count-completed').textContent = counts['completed'];
+
+  const countCompleted = tasks.length - countCompleted;
+  document.getElementById('task-summary').textContent = `${activeCount} active. ${countCompleted} completed`;
 }
 
 // Helper: Create Task DOM element
